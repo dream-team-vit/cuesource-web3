@@ -8,6 +8,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import Head from "next/head";
 import { rtlCache } from "~/utils/rtl-cache";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 const TheApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -23,17 +24,19 @@ const TheApp: AppType<{ session: Session | null }> = ({
         />
       </Head>
       <SessionProvider session={session}>
-        <MantineProvider
-          withGlobalStyles
-          withNormalizeCSS
-          theme={{
-            /** Put your mantine theme override here */
-            colorScheme: "dark",
-          }}
-          emotionCache={rtlCache}
-        >
-          <Component {...pageProps} />
-        </MantineProvider>
+        <ThirdwebProvider activeChain="localhost">
+          <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={{
+              /** Put your mantine theme override here */
+              colorScheme: "dark",
+            }}
+            emotionCache={rtlCache}
+          >
+            <Component {...pageProps} />
+          </MantineProvider>
+        </ThirdwebProvider>
       </SessionProvider>
     </>
   );
