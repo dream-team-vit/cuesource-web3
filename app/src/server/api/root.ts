@@ -1,5 +1,6 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { questRouter } from "~/server/api/routers/quest";
+import { githubRouter } from "./routers/github";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { questRouter } from "~/server/api/routers/quest";
  */
 export const appRouter = createTRPCRouter({
   quest: questRouter,
+  github: githubRouter,
 });
 
 // export type definition of API
