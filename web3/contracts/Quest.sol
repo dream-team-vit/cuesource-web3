@@ -24,8 +24,9 @@ contract QuestCreator is Ownable {
 		uint maxPrize;
 		uint startingDate;
 		uint endDate;
-		uint16 deadlineDayCount;
-		uint16 issueId;
+		uint deadlineDayCount;
+		uint issueId;
+		uint repoId;
 		string selectedBid;
 		bool accepted;
 		uint selectedTime;
@@ -42,10 +43,11 @@ contract QuestCreator is Ownable {
 		return ammountInContract;
 	}
 
-	function createQuest(string memory _description, uint _minPrize, uint _maxPrize, uint16 _deadlineDayCount, uint16 _issueId) public returns (uint) {
+	function createQuest(string memory _description, uint _minPrize, uint _maxPrize, uint _deadlineDayCount, uint _issueId, uint _repoId) public returns (uint) {
 		Quest storage quest = quests[numberOfQuests];
 
 		quest.issueId = _issueId;
+		quest.repoId = _repoId;
 		quest.deadlineDayCount = _deadlineDayCount;
 		quest.minPrize = _minPrize;
 		quest.maxPrize = _maxPrize;
@@ -158,7 +160,7 @@ contract QuestCreator is Ownable {
 		return _questId;
 	}
 
-	function _getDeadline(uint _selectedTime, uint16 _deadlineDayCount) private pure returns (uint) {
+	function _getDeadline(uint _selectedTime, uint _deadlineDayCount) private pure returns (uint) {
 		// Number of seconds in a day is 86400
 		uint deadlineDayCountSec = _deadlineDayCount * 86400;
 		uint deadlineDayTime = _selectedTime + deadlineDayCountSec;
