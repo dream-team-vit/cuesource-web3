@@ -78,4 +78,33 @@ export const githubRouter = createTRPCRouter({
 
       return issuesOfRepo;
     }),
+
+  // get repo details from repo number
+  getRepoDetails: protectedProcedure
+    .input(z.object({ repoId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      // nedded props html_url, name,
+      const repo = (
+        await ctx.octokit.request("GET /repositories/:id", {
+          id: input.repoId,
+        })
+      ).data;
+
+      // TODO: return only the useful data
+
+      return repo;
+    }),
+
+  getIssueDetails: protectedProcedure
+    .input(z.object({ issueNumber: z.number(), repoId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const issue = (
+        await ctx.octokit.request("GET /repositories/:id/issues/:num", {
+          id: input.repoId,
+          num: input.issueNumber,
+        })
+      ).data;
+
+      return issue;
+    }),
 });

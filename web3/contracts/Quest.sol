@@ -25,7 +25,7 @@ contract QuestCreator is Ownable {
 		uint startingDate;
 		uint endDate;
 		uint deadlineDayCount;
-		uint issueId;
+		uint issueNumber;
 		uint repoId;
 		string selectedBid;
 		bool accepted;
@@ -43,10 +43,11 @@ contract QuestCreator is Ownable {
 		return ammountInContract;
 	}
 
-	function createQuest(string memory _description, uint _minPrize, uint _maxPrize, uint _deadlineDayCount, uint _issueId, uint _repoId) public returns (uint) {
+	function createQuest(address _owner, string memory _description, uint _minPrize, uint _maxPrize, uint _deadlineDayCount, uint _issueNumber, uint _repoId) public returns (uint) {
 		Quest storage quest = quests[numberOfQuests];
 
-		quest.issueId = _issueId;
+		quest.owner = _owner;
+		quest.issueNumber = _issueNumber;
 		quest.repoId = _repoId;
 		quest.deadlineDayCount = _deadlineDayCount;
 		quest.minPrize = _minPrize;
@@ -59,10 +60,10 @@ contract QuestCreator is Ownable {
 		return numberOfQuests - 1;
 	}
 
-	function updateQuest(uint _questId, string memory _description, uint _minPrize, uint _maxPrize, uint16 _deadlineDayCount, uint16 _issueId) public returns (Quest memory) {
+	function updateQuest(uint _questId, string memory _description, uint _minPrize, uint _maxPrize, uint16 _deadlineDayCount, uint16 _issueNumber) public returns (Quest memory) {
 		Quest storage quest = quests[_questId];
 
-		quest.issueId = _issueId;
+		quest.issueNumber = _issueNumber;
 		quest.deadlineDayCount = _deadlineDayCount;
 		quest.minPrize = _minPrize;
 		quest.maxPrize = _maxPrize;

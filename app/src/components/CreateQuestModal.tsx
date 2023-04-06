@@ -1,7 +1,7 @@
 import { Button, Modal, NumberInput, Textarea, TextInput } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconBug, IconChecks } from "@tabler/icons-react";
-import { useContract, useContractWrite } from "@thirdweb-dev/react";
+import { useAddress, useContract, useContractWrite } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { env } from "~/env.mjs";
@@ -11,9 +11,9 @@ import { contractAddress } from "~/utils/contract";
 export const CreateQuestModal: React.FC<{
   opened: boolean;
   onClose: () => void;
-  _issueId: number;
+  _issueNumber: number;
   _repoId: number;
-}> = ({ opened, onClose, _issueId, _repoId }) => {
+}> = ({ opened, onClose, _issueNumber, _repoId }) => {
   const [_description, setDescription] = useState("");
   const [_minPrize, setMinPrize] = useState(0);
   const [_maxPrize, setMaxPrize] = useState(0);
@@ -44,6 +44,7 @@ export const CreateQuestModal: React.FC<{
         });
   };
 
+  const address = useAddress();
   const { contract } = useContract(contractAddress);
 
   const {
@@ -54,13 +55,15 @@ export const CreateQuestModal: React.FC<{
 
   const create = async () => {
     try {
+      const _owner = address;
       await createQuest(
         [
+          _owner,
           _description,
           _minPrize,
           _maxPrize,
           _deadlineDayCount,
-          _issueId,
+          _issueNumber,
           _repoId,
         ],
         {

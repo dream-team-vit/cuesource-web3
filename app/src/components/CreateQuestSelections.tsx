@@ -2,6 +2,7 @@ import {
   Badge,
   Button,
   Container,
+  Divider,
   Group,
   Select,
   SelectItem,
@@ -103,7 +104,7 @@ export default function CreateQuestSelections() {
             issues.map(
               (issue) =>
                 ({
-                  value: issue.id.toString(),
+                  value: issue.number.toString(),
                   label: `[#${issue.number}] ${issue.title}`,
                   description: issue.id,
                 } as SelectItem)
@@ -137,29 +138,9 @@ export default function CreateQuestSelections() {
   );
 
   return (
-    <div
-      style={{
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "center",
-        width: "100%",
-      }}
-    >
-      <Title order={2} mb="sm" style={{ textAlign: "center" }}>
-        Create Quest
-      </Title>
-      <Container
-        sx={(theme) => ({
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-around",
-          border: "0.1px solid gray",
-          borderRadius: "10px",
-          gap: theme.spacing.md,
-        })}
-        px="sm"
-        py="md"
-      >
+    <div className="flex flex-col items-start gap-2 rounded-lg border border-gray-600 px-6 py-4">
+      <Title order={3}>Create Quest</Title>
+      <div className="flex items-center justify-around gap-5">
         <Select
           label="Organization"
           data={orgSelectionData}
@@ -200,10 +181,10 @@ export default function CreateQuestSelections() {
             setShowCreateDetailModal(false);
             nullifySelection();
           }}
-          _issueId={parseInt(selectedIssueId!)}
+          _issueNumber={parseInt(selectedIssueId!)}
           _repoId={parseInt(selectedRepoId!)}
         />
-      </Container>
+      </div>
     </div>
   );
 }
