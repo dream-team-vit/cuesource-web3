@@ -1,5 +1,4 @@
 import { createTRPCRouter } from "~/server/api/trpc";
-import { questRouter } from "~/server/api/routers/quest";
 import { githubRouter } from "./routers/github";
 
 /**
@@ -8,7 +7,6 @@ import { githubRouter } from "./routers/github";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  quest: questRouter,
   github: githubRouter,
 });
 

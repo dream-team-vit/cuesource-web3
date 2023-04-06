@@ -4,38 +4,12 @@ import OpenQuestBoard from "~/components/OpenQuestBoard";
 
 export default function Home() {
   return (
-    <div
-      style={{
-        height: "100vh",
-        width: "100%",
-        display: "flex",
-        // alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
+    <div className="flex min-h-screen w-full flex-col">
       <HeaderSection />
-      <div
-        style={{
-          alignItems: "center",
-          flexDirection: "column",
-          justifyContent: "center",
-          width: "100%",
-          marginTop: "10px",
-        }}
-      >
+      <div className="mt-3 flex w-full flex-col items-center justify-center gap-10 p-2">
         <CreateQuestSelections />
 
-        {/* <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around",
-            width: "100%",
-          }}
-        >
-          <OpenQuestBoard />
-          <OpenQuestBoard />
-        </div> */}
+        <OpenQuestBoard />
       </div>
     </div>
   );

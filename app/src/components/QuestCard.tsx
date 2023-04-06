@@ -1,87 +1,130 @@
-import { Anchor, Box, Button, Container, Grid, Text } from "@mantine/core";
-import { useRouter } from "next/router";
+import { Avatar, Button, Card, Divider, Text } from "@mantine/core";
+import { useAddress } from "@thirdweb-dev/react";
+import { useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import { api } from "~/utils/api";
+import { redirect, truncate } from "~/utils/helper";
 
-export type QuestCardProps = {
-  orgName: string;
-  issue: {
-    title: string;
-    description: string;
-    link: string;
-  };
+export const QuestCard: React.FC<{ quest: any }> = ({ quest }) => {
+  // helpers
+  const address = useAddress();
 
-  deadlineDayCount: number;
-  minPrize: number;
-  maxPrize: number;
-  repo: {
-    link: string;
-    name: string;
-  };
-};
+  // get repo details (name, link, orgname, orglink) from `quest.repoId`
+  const { data: repo, isLoading: isRepoDataLoading } =
+    api.github.getRepoDetails.useQuery({ repoId: quest.repoId.toNumber() });
 
-export default function QuestCard({
-  orgName,
-  issue,
-  deadlineDayCount,
-  minPrize,
-  maxPrize,
-  repo,
-}: QuestCardProps) {
-  const router = useRouter();
+  // get issue details (number, title,) from `quest.issueId`
+  const { data: issue, isLoading: isIssueDataLoading } =
+    api.github.getIssueDetails.useQuery({
+      repoId: quest.repoId.toNumber(),
+      issueNumber: quest.issueNumber.toNumber(),
+    });
 
+  useEffect(() => {
+    console.log(repo);
+  }, [isRepoDataLoading]);
+
+  if (isRepoDataLoading || isIssueDataLoading || !quest) return null;
   return (
-    <Box
-      sx={(theme) => ({
-        backgroundColor:
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0],
-        textAlign: "center",
-        padding: theme.spacing.xl,
-        borderRadius: theme.radius.xl,
-        cursor: "pointer",
-        width: "content",
-
-        "&:hover": {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[5]
-              : theme.colors.gray[1],
-        },
-      })}
+    <Card
+      className="flex w-5/6 flex-col items-start justify-center gap-5"
+      withBorder
+      shadow="md"
     >
-      <Grid columns={160}>
-        <Grid.Col span={100}>
-          <Text autoCapitalize="" align="left" fz={"xs"}>
-            {orgName}
+      {/* top section */}
+      <div className="flex w-full items-center justify-between">
+        {/* OrgName/RepoName */}
+        <div className="flex items-center gap-2">
+          <Avatar size="sm" src={repo.owner.avatar_url} />
+
+          <Text className="link" onClick={() => redirect(repo.owner.html_url)}>
+            {repo.owner.login}
           </Text>
-          <Container style={{ alignItems: "left" }}>
-            <Text style={{ fontStyle: "bold", textAlign: "right" }}>
-              {issue.title}
-            </Text>
-            <Text align="left" variant="text">
-              {issue.description.slice(0, 100)}...
-            </Text>
-          </Container>
-        </Grid.Col>
-        <Grid.Col span={17}>
-          <Text fz={"md"}>Deadline</Text>
-          <Text fz={"lg"}>{deadlineDayCount} days</Text>
-        </Grid.Col>
-        <Grid.Col span={17}>
-          <Text fz={"md"}>Bid Price</Text>
-          <Text>
-            {minPrize} ETH - {maxPrize} ETH
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={20}>
-          <Anchor autoCapitalize="" href="" target={repo.link}>
+          <Text size="xl">/</Text>
+          <Text onClick={() => redirect(repo.html_url)} className="link">
             {repo.name}
-          </Anchor>
-          <Button onClick={() => router.push(issue.link)} color="teal" mt={20}>
-            More Details
+          </Text>
+        </div>
+
+        {/* Owner Address */}
+        <Text
+          className="link text-gray-400"
+          onClick={() =>
+            redirect(`https://etherscan.io/address/${quest.owner}`)
+          }
+        >
+          {(quest.owner as string).slice(0, 7)}...
+          {(quest.owner as string).slice(-3)}
+          {address && quest.owner === address && " (You)"}
+        </Text>
+      </div>
+
+      {/* middle section ~ a.k.a issue detail section */}
+      <div className="w-full">
+        <Text className="text-gray-400">#{issue.number}</Text>
+        <Text
+          className="link mb-2 text-lg font-bold"
+          onClick={() => redirect(issue.html_url)}
+        >
+          {issue.title}
+        </Text>
+        <Text className="flex-wrap text-sm text-gray-400">
+          <ReactMarkdown>{`${truncate(issue.body, 100)}...`}</ReactMarkdown>
+        </Text>
+      </div>
+
+      <Divider
+        label="Quest Description"
+        labelPosition="center"
+        className="w-full"
+      />
+
+      {/* Quest Description */}
+      <div className="flex w-full items-center justify-evenly gap-2">
+        {/* description */}
+        <div>
+          <Text size="sm" mb="xs" className="text-gray-400">
+            Description
+          </Text>
+          <Text className="max-w-lg flex-wrap">
+            {truncate(quest.description, 100)}...
+          </Text>
+        </div>
+
+        <Divider orientation="vertical" />
+
+        {/* bid pay-range */}
+        <div>
+          <Text size="sm" mb="xs" className="text-gray-400">
+            Pay Range
+          </Text>
+          <Text>
+            {quest.minPrize.toNumber()}ETH - {quest.maxPrize.toNumber()}ETH
+          </Text>
+        </div>
+
+        <Divider orientation="vertical" />
+
+        {/* number of bids */}
+        <div>
+          <Text size="sm" mb="xs" className="text-gray-400">
+            Bids (now)
+          </Text>
+          <Text>{quest.bids.length}</Text>
+        </div>
+
+        <Divider orientation="vertical" />
+
+        {/* know more */}
+        <div>
+          <Text size="sm" mb="xs" className="text-gray-400">
+            Know more...
+          </Text>
+          <Button variant="outline" color="indigo">
+            Details
           </Button>
-        </Grid.Col>
-      </Grid>
-    </Box>
+        </div>
+      </div>
+    </Card>
   );
-}
+};
