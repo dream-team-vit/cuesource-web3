@@ -1,8 +1,8 @@
 {
-  "name": "hardhat-javascript-starter",
+  "name": "cuesource",
   "scripts": {
     "build": "npx thirdweb@latest detect",
-    "deploy": "npx thirdweb@latest deploy",
+    "deploy": "npx thirdweb deploy",
     "release": "npx thirdweb@latest release"
   },
   "devDependencies": {

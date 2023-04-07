@@ -31,13 +31,6 @@ export const githubRouter = createTRPCRouter({
         },
       });
     }),
-  checkPersonalAccessToken: protectedProcedure.query(async ({ ctx }) => {
-    return !(
-      await ctx.prisma.account.findFirst({
-        where: { userId: ctx.session.user.id },
-      })
-    )?.token?.includes("ghp_");
-  }),
 
   getPersonalAccessToken: protectedProcedure.query(async ({ ctx }) => {
     return (await ctx.prisma.account.findFirst({

@@ -169,7 +169,7 @@ export default function CreateQuestSelections() {
           onClick={() => setShowCreateDetailModal(true)}
           mt="xl"
           variant="outline"
-          color="red"
+          color="lime"
           disabled={!address}
         >
           Create
