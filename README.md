@@ -8,10 +8,10 @@ web 3 based decentralized platform which allows open-source organization to list
 
 Developers faces difficulty in finding good issues to work upon as most of the issue are assigned to someone and they didn’t complete their work on time, this leads to delay in solving of problem for both developer and organizations. Further, it is also important for organizations to find the best and serious developers to work upon their important and critical issue on their open-source products that is used by a lot of people.
 
-![PS1](./.github/assets/ps1.jpg)
-![PS2](./.github/assets/ps2.jpg)
-![PS3](./.github/assets/ps3.jpg)
-![PS4](./.github/assets/ps4.jpg)
+Issue Assignment Requests | Issue Not Solved  
+:-------------------------:|:-------------------------:
+![PS1](./.github/assets/ps1.jpg "User asking to assign issue") |  ![PS2](./.github/assets/ps2.jpg "Issue not solved")
+![PS3](./.github/assets/ps3.jpg "Multiple User Requests") | ![PS4](./.github/assets/ps4.jpg "Issue still not solved")
 
 ### The Solution
 
