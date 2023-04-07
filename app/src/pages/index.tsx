@@ -8,7 +8,6 @@ export default function Home() {
       <HeaderSection />
       <div className="mt-3 flex w-full flex-col items-center justify-center gap-10 p-2">
         <CreateQuestSelections />
-
         <OpenQuestBoard />
       </div>
     </div>

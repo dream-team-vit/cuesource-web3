@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Group,
@@ -22,8 +23,6 @@ export default function HeaderSection() {
   const [token, setToken] = useState("");
 
   const session = useSession();
-  const { data: isAccessTokenPresent } =
-    api.github.checkPersonalAccessToken.useQuery();
 
   const { data: access_token } = api.github.getPersonalAccessToken.useQuery();
 
@@ -47,20 +46,13 @@ export default function HeaderSection() {
         }}
       >
         <Text
-          align="center"
-          fw={500}
           onClick={() => {
             router.push("/");
           }}
-          sx={{
-            fontSize: "1.4rem",
-            color: "white",
-            "&:hover": {
-              cursor: "pointer",
-            },
-          }}
+          size="xl"
+          className="cursor-pointer font-['Lato'] font-extrabold text-slate-500 dark:text-white"
         >
-          CueSource
+          cuesource
         </Text>
 
         <Group
@@ -69,21 +61,31 @@ export default function HeaderSection() {
             gridTemplateColumns: "repeat(3,auto)",
           }}
         >
-          <Button
-            onClick={() => signIn("github")}
-            variant="default"
-            display={"block"}
-          >
-            {session.status !== "authenticated"
-              ? "Login with GitHub"
-              : `Hey! ${session.data.user.name}`}
-          </Button>
+          {session.status !== "authenticated" ? (
+            <Button
+              onClick={() => signIn("github")}
+              variant="default"
+              display={"block"}
+            >
+              Login with GitHub
+            </Button>
+          ) : (
+            <Avatar
+              src={session.data.user.image}
+              radius="lg"
+              className="cursor-pointer"
+            />
+          )}
           {session.status === "authenticated" && !access_token ? (
-            <Button onClick={() => setOpened(true)} variant="outline">
-              Add Personal Access Token
+            <Button
+              onClick={() => setOpened(true)}
+              color="indigo"
+              variant="outline"
+            >
+              Add Token
             </Button>
           ) : null}
-          <ConnectWallet />
+          <ConnectWallet className="max-h-10" />
         </Group>
         <Modal
           opened={opened}
@@ -100,9 +102,11 @@ export default function HeaderSection() {
             value={token}
             onChange={(e) => setToken(e.target.value)}
           />
-          <Button onClick={setAccessToken} variant="outline">
-            Set
-          </Button>
+          <div className="flex items-center justify-end">
+            <Button onClick={setAccessToken} color="indigo" variant="outline">
+              Set
+            </Button>
+          </div>
         </Modal>
       </Header>
     </Box>

@@ -17,7 +17,7 @@ const TheApp: AppType<{ session: Session | null }> = ({
   return (
     <>
       <Head>
-        <title>CueSource</title>
+        <title>cuesource</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -31,6 +31,8 @@ const TheApp: AppType<{ session: Session | null }> = ({
             theme={{
               /** Put your mantine theme override here */
               colorScheme: "dark",
+              fontFamily: "Open Sans",
+              primaryColor: "indigo",
             }}
           >
             <Component {...pageProps} />

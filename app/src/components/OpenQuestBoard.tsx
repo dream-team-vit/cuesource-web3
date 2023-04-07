@@ -8,17 +8,13 @@ export default function OpenQuestBoard() {
   const { contract } = useContract(contractAddress);
   const { data: quests, isLoading } = useContractRead(contract, "getQuests");
 
-  useEffect(() => {
-    console.log(quests);
-  }, [isLoading]);
-
-  if (isLoading) return null;
+  if (isLoading || quests.length === 0) return null;
   return (
     <Center className="flex w-full flex-col items-center justify-center gap-10">
       <Divider
-        label={<Title order={2}>Open Quests</Title>}
-        labelPosition="center"
-        className="w-full"
+        label={<Title order={2}>quests</Title>}
+        labelPosition="left"
+        className="w-3/4"
       ></Divider>
       {(quests as Array<any>)
         .filter((quest) => !quest.accepted as boolean)
