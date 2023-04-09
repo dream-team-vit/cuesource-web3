@@ -139,10 +139,10 @@ export default function CreateQuestSelections() {
 
   return (
     <div className="flex flex-col items-start gap-2 rounded-lg border border-gray-600 px-6 py-4">
-      <Title order={3}>Create Quest</Title>
+      <Title order={3}>create quest</Title>
       <div className="flex items-center justify-around gap-5">
         <Select
-          label="Organization"
+          label="organization"
           data={orgSelectionData}
           value={selectedOrgId}
           onChange={setSelectedOrgId}
@@ -151,14 +151,14 @@ export default function CreateQuestSelections() {
         />
 
         <Select
-          label="Repository"
+          label="repository"
           data={repoSelectionData}
           value={selectedRepoId}
           onChange={setSelectedRepoId}
         />
 
         <Select
-          label="Issue"
+          label="issue"
           data={issueSelectionData}
           value={selectedIssueId}
           onChange={setSelectedIssueId}
@@ -172,7 +172,7 @@ export default function CreateQuestSelections() {
           color="lime"
           disabled={!address}
         >
-          Create
+          create
         </Button>
 
         <CreateQuestModal
