@@ -6,13 +6,11 @@ import {
   Header,
   Modal,
   Text,
-  Textarea,
   TextInput,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useDisclosure } from "@mantine/hooks";
 import { signIn, useSession } from "next-auth/react";
-import { ConnectWallet, useMetamask } from "@thirdweb-dev/react";
+import { ConnectWallet } from "@thirdweb-dev/react";
 import { api } from "~/utils/api";
 import { useState } from "react";
 

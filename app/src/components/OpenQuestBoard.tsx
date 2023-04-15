@@ -18,7 +18,7 @@ export default function OpenQuestBoard() {
       ></Divider>
       {(quests as Array<any>)
         .filter((quest) => !quest.accepted as boolean)
-        .map((quest) => quest && <QuestCard quest={quest} />)}
+        .map((quest) => quest && <QuestCard key={quest.id} quest={quest} />)}
     </Center>
   );
 }
