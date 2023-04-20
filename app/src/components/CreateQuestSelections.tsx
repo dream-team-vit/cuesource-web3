@@ -148,6 +148,11 @@ export default function CreateQuestSelections() {
           onChange={setSelectedOrgId}
           mr="sm"
           style={{ width: "full" }}
+          placeholder={
+            listOfUserOrgs?.length === 0
+              ? "No Public Organizations for the logged in User"
+              : "Select an Organization"
+          }
         />
 
         <Select
@@ -155,6 +160,11 @@ export default function CreateQuestSelections() {
           data={repoSelectionData}
           value={selectedRepoId}
           onChange={setSelectedRepoId}
+          placeholder={
+            repos?.length === 0
+              ? "No public Repositories in the Organization"
+              : "Select a Repository"
+          }
         />
 
         <Select
@@ -163,13 +173,17 @@ export default function CreateQuestSelections() {
           value={selectedIssueId}
           onChange={setSelectedIssueId}
           itemComponent={IssueSelectItem}
+          placeholder={
+            issues?.length === 0
+              ? "No Issues in the Repository"
+              : "Select an Issue"
+          }
         />
 
         <Button
           onClick={() => setShowCreateDetailModal(true)}
           mt="xl"
           variant="outline"
-          color="lime"
           disabled={!address}
         >
           create
