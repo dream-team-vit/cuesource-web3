@@ -2,37 +2,25 @@ import {
   Avatar,
   Box,
   Button,
+  Container,
   Group,
   Header,
-  Modal,
+  Menu,
   Text,
-  Textarea,
-  TextInput,
+  UnstyledButton,
+  rem,
 } from "@mantine/core";
 import { useRouter } from "next/router";
-import { useDisclosure } from "@mantine/hooks";
-import { signIn, useSession } from "next-auth/react";
-import { ConnectWallet, useMetamask } from "@thirdweb-dev/react";
-import { api } from "~/utils/api";
+import { signOut, useSession } from "next-auth/react";
+import { ConnectWallet } from "@thirdweb-dev/react";
 import { useState } from "react";
+import { IconChevronDown, IconLogout } from "@tabler/icons-react";
 
 export default function HeaderSection() {
   const router = useRouter();
-  const [opened, setOpened] = useState(false);
-
-  const [token, setToken] = useState("");
-
   const session = useSession();
 
-  const { data: access_token } = api.github.getPersonalAccessToken.useQuery();
-
-  const setAccessTokenMutation =
-    api.github.setPersonalAccessToken.useMutation();
-
-  const setAccessToken = async () => {
-    await setAccessTokenMutation.mutateAsync({ token });
-    setOpened(false);
-  };
+  const [userMenuOpened, setUserMenuOpened] = useState(false);
 
   return (
     <Box>
@@ -61,53 +49,40 @@ export default function HeaderSection() {
             gridTemplateColumns: "repeat(3,auto)",
           }}
         >
-          {session.status !== "authenticated" ? (
-            <Button
-              onClick={() => signIn("github")}
-              variant="default"
-              display={"block"}
-            >
-              Login with GitHub
-            </Button>
-          ) : (
-            <Avatar
-              src={session.data.user.image}
-              radius="lg"
-              className="cursor-pointer"
-            />
-          )}
-          {session.status === "authenticated" && !access_token ? (
-            <Button
-              onClick={() => setOpened(true)}
-              color="indigo"
-              variant="outline"
-            >
-              Add Token
-            </Button>
-          ) : null}
+          <Menu
+            width={200}
+            position="bottom-end"
+            transitionProps={{ transition: "pop-top-right" }}
+            withinPortal
+            onClose={() => setUserMenuOpened(false)}
+            onOpen={() => setUserMenuOpened(true)}
+          >
+            <Menu.Target>
+              <Button variant="outline" color="gray">
+                <Avatar
+                  src={session.data?.user.image}
+                  alt={session.data?.user.name || ""}
+                  radius="xl"
+                  size={20}
+                  mr="xs"
+                />
+                <Text weight={500} size="sm" sx={{ lineHeight: 1 }} mr={3}>
+                  {session.data?.user.name}
+                </Text>
+                <IconChevronDown size={rem(12)} stroke={1.5} />
+              </Button>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                onClick={() => signOut()}
+                icon={<IconLogout color="red" size="0.9rem" stroke={1.5} />}
+              >
+                Logout
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
           <ConnectWallet className="max-h-10" />
         </Group>
-        <Modal
-          opened={opened}
-          onClose={() => setOpened(false)}
-          title="Set your Personal Access Token"
-          centered
-          transitionProps={{ transition: "fade", duration: 200 }}
-        >
-          <TextInput
-            placeholder="Enter token"
-            label="Personal token access"
-            withAsterisk
-            py={15}
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-          />
-          <div className="flex items-center justify-end">
-            <Button onClick={setAccessToken} color="indigo" variant="outline">
-              Set
-            </Button>
-          </div>
-        </Modal>
       </Header>
     </Box>
   );

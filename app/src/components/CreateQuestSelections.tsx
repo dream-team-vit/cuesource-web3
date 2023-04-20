@@ -139,40 +139,54 @@ export default function CreateQuestSelections() {
 
   return (
     <div className="flex flex-col items-start gap-2 rounded-lg border border-gray-600 px-6 py-4">
-      <Title order={3}>Create Quest</Title>
+      <Title order={3}>create quest</Title>
       <div className="flex items-center justify-around gap-5">
         <Select
-          label="Organization"
+          label="organization"
           data={orgSelectionData}
           value={selectedOrgId}
           onChange={setSelectedOrgId}
           mr="sm"
           style={{ width: "full" }}
+          placeholder={
+            listOfUserOrgs?.length === 0
+              ? "No Public Organizations for the logged in User"
+              : "Select an Organization"
+          }
         />
 
         <Select
-          label="Repository"
+          label="repository"
           data={repoSelectionData}
           value={selectedRepoId}
           onChange={setSelectedRepoId}
+          placeholder={
+            repos?.length === 0
+              ? "No public Repositories in the Organization"
+              : "Select a Repository"
+          }
         />
 
         <Select
-          label="Issue"
+          label="issue"
           data={issueSelectionData}
           value={selectedIssueId}
           onChange={setSelectedIssueId}
           itemComponent={IssueSelectItem}
+          placeholder={
+            issues?.length === 0
+              ? "No Issues in the Repository"
+              : "Select an Issue"
+          }
         />
 
         <Button
           onClick={() => setShowCreateDetailModal(true)}
           mt="xl"
           variant="outline"
-          color="lime"
           disabled={!address}
         >
-          Create
+          create
         </Button>
 
         <CreateQuestModal

@@ -85,7 +85,7 @@ export const CreateQuestModal: React.FC<{
   if (isLoading || error) return null;
 
   return (
-    <Modal opened={opened} onClose={onClose} title="Create Quest">
+    <Modal opened={opened} onClose={onClose} title="create quest">
       <Textarea
         cols={5}
         value={_description}
