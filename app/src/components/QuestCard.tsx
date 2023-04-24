@@ -1,13 +1,18 @@
 import { Avatar, Button, Card, Divider, Text } from "@mantine/core";
 import { useAddress } from "@thirdweb-dev/react";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { api } from "~/utils/api";
 import { redirect, truncate } from "~/utils/helper";
 
-export const QuestCard: React.FC<{ quest: any }> = ({ quest }) => {
+export const QuestCard: React.FC<{ quest: any; id: number }> = ({
+  quest,
+  id,
+}) => {
   // helpers
   const address = useAddress();
+  const router = useRouter();
 
   // get repo details (name, link, orgname, orglink) from `quest.repoId`
   const { data: repo, isLoading: isRepoDataLoading } =
@@ -20,11 +25,8 @@ export const QuestCard: React.FC<{ quest: any }> = ({ quest }) => {
       issueNumber: quest.issueNumber.toNumber(),
     });
 
-  useEffect(() => {
-    console.log(repo);
-  }, [isRepoDataLoading]);
-
   if (isRepoDataLoading || isIssueDataLoading || !quest) return null;
+
   return (
     <Card
       className="flex w-5/6 flex-col items-start justify-center gap-5"
@@ -120,7 +122,11 @@ export const QuestCard: React.FC<{ quest: any }> = ({ quest }) => {
           <Text size="sm" mb="xs" className="text-gray-400">
             Know more...
           </Text>
-          <Button variant="outline" color="indigo">
+          <Button
+            variant="outline"
+            color="indigo"
+            onClick={() => router.push(`/quests/${id}`)}
+          >
             Details
           </Button>
         </div>
