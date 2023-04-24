@@ -184,7 +184,9 @@ export default function CreateQuestSelections() {
           onClick={() => setShowCreateDetailModal(true)}
           mt="xl"
           variant="outline"
-          disabled={!address}
+          disabled={
+            !address || !selectedOrgId || !selectedIssueId || !selectedRepoId
+          }
         >
           create
         </Button>
